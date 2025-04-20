@@ -1,5 +1,18 @@
 version: "3"
 services:
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+      - /www/autoDepoly/static:/code/collected_static
+    networks:
+      - nginx_default
   app:
     restart: unless-stopped
     build: .  # '点'代表当前目录
@@ -11,7 +24,9 @@ services:
       - "8000"
     networks:
       - nginx_default
-
+    depends_on:
+      - nginx-proxy-manager
+      
 networks:
   nginx_default:
-    external: true
+    driver: bridge
