@@ -7,6 +7,7 @@ __pycache__/
 
 # 忽略虚拟环境文件夹
 venv/
+.venv/
 *.egg-info/
 dist/
 build/
