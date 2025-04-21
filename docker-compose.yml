@@ -16,6 +16,8 @@ services:
   app:
     restart: unless-stopped
     build: .  # '点'代表当前目录
+    env_file:
+      - .env
     command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn --timeout=30 --workers=4 --bind :8000 autoDepoly.wsgi:application"
     volumes:
       - .:/code
