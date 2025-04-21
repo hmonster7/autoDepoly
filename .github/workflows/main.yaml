@@ -28,6 +28,10 @@ jobs:
             yum install -y git
           fi
           
+          # 添加 GitHub 到 known_hosts（信任 github.com）
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+    
           # 如果目录不存在就 clone，否则就进入目录
           if [ ! -d "/root/autoDepoly" ]; then
             git clone git@github.com:git@github.com:hmonster7/autoDepoly.git /root/autoDepoly
