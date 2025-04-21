@@ -33,10 +33,10 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
     
           # 如果目录不存在就 clone，否则就进入目录
-          if [ ! -d "/root/autoDepoly" ]; then
+          if [ ! -d "/www/autoDepoly" ]; then
             git clone git@github.com:hmonster7/autoDepoly.git /root/autoDepoly
           fi
-          cd /root/autoDepoly
+          cd /www/autoDepoly
           
           # 拉取最新代码
           git pull origin master
