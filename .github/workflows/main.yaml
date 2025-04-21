@@ -34,7 +34,7 @@ jobs:
     
           # 如果目录不存在就 clone，否则就进入目录
           if [ ! -d "/root/autoDepoly" ]; then
-            git clone git@github.com:git@github.com:hmonster7/autoDepoly.git /root/autoDepoly
+            git clone git@github.com:hmonster7/autoDepoly.git /root/autoDepoly
           fi
           cd /root/autoDepoly
           
