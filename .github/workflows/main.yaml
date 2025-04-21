@@ -17,22 +17,24 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.4
         with:
             ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-      - name: Upload .env to server
-        run: |
-          ssh -o StrictHostKeyChecking=no root@43.160.207.67 << 'EOF'
-          echo "${{ secrets.ENV_FILE }}" > /root/autoDepoly/.env
-          EOF
 
       - name: Deploy via SSH
         run: |
           ssh -o StrictHostKeyChecking=no root@43.160.207.67 << 'EOF'
+          
           # 如果目录不存在就 clone，否则就进入目录
           if [ ! -d "/root/autoDepoly" ]; then
             git clone git@github.com:git@github.com:hmonster7/autoDepoly.git /root/autoDepoly
           fi
           cd /root/autoDepoly
           
+          # 拉取最新代码
           git pull origin master
+          
+          # 写入 .env 文件（此时目录已存在）
+          echo "${{ secrets.ENV_FILE }}" > .env
+          
+          # 启动 Docker 服务
           docker-compose down
           docker-compose up -d --build
           
