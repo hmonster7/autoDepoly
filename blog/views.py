@@ -13,6 +13,7 @@ class IndexView(ListView):
     context_object_name = 'item_list'
 
     def get_context_data(self, **kwargs):
-        content = super(IndexView, self).get_context_data()
+        context = super(IndexView, self).get_context_data()
         news_list = News.objects.all()
-        content['news_list'] = news_list
+        context['news_list'] = news_list
+        return context
