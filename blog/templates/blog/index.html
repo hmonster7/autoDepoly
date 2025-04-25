@@ -16,5 +16,15 @@ Hello, world. You're at the polls index.
     </tr>
     {% endfor %}
 </table>
+<div>News:</div>
+<table border="1">
+    {% for news in news_list %}
+    <tr>
+        <td>{{ news.title }}</td>
+        <td>{{ news.content }}</td>
+        <td>{{ news.created_at }}</td>
+    </tr>
+    {% endfor %}
+</table>
 </body>
 </html>
