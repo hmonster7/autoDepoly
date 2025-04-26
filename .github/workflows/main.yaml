@@ -36,12 +36,12 @@ jobs:
           BRANCH="${{ github.ref_name }}"
           
           # 按分支设置路径和文件
-          if [ "\$BRANCH" = "master" ]; then
+          if [ "$BRANCH" = "master" ]; then
             PROJECT_DIR="/www/autoDepoly-master"
             COMPOSE_FILE="docker-compose.master.yml"
             ENV_FILE=".env.master"
             ENV_CONTENT='${{ secrets.ENV_MASTER }}'
-          elif [ "\$BRANCH" = "dev" ]; then
+          elif [ "$BRANCH" = "dev" ]; then
             PROJECT_DIR="/www/autoDepoly-dev"
             COMPOSE_FILE="docker-compose.dev.yml"
             ENV_FILE=".env.dev"
@@ -52,34 +52,34 @@ jobs:
           fi
           
           # 如果目录不存在就 clone，否则就进入目录
-          if [ ! -d "\$PROJECT_DIR" ]; then
-            git clone --branch \$BRANCH git@github.com:hmonster7/autoDepoly.git \$PROJECT_DIR
+          if [ ! -d "$PROJECT_DIR" ]; then
+            git clone --branch $BRANCH git@github.com:hmonster7/autoDepoly.git $PROJECT_DIR
           fi
-          cd \$PROJECT_DIR
+          cd $PROJECT_DIR
           
-          echo "📥 拉取 \$BRANCH 最新代码"
+          echo "📥 拉取 $BRANCH 最新代码"
           # 拉取最新代码
-          # git fetch origin \$BRANCH
-          # git checkout \$BRANCH
-          git pull origin \$BRANCH
+          # git fetch origin $BRANCH
+          # git checkout $BRANCH
+          git pull origin $BRANCH
           
-          echo "📝 写入环境变量到 \$ENV_FILE"
+          echo "📝 写入环境变量到 $ENV_FILE"
           # 写入 .env 文件（此时目录已存在）
-          echo "\$ENV_CONTENT" > \$ENV_FILE
+          echo "$ENV_CONTENT" > $ENV_FILE
           
           echo "🧩 检查 nginx-proxy-manager 是否已运行"
-          if [ -z "\$(docker ps -q -f name=nginx-proxy-manager)" ]; then
+          if [ -z "$(docker ps -q -f name=nginx-proxy-manager)" ]; then
             echo "🔵 nginx-proxy-manager 未运行，启动中..."
             docker compose -f docker-compose.nginx.yml up -d
           else
             echo "🟢 nginx-proxy-manager 已在运行，无需启动"
           fi
           
-          echo "🛠️ 启动 Docker 服务：\$COMPOSE_FILE"
+          echo "🛠️ 启动 Docker 服务：$COMPOSE_FILE"
           # 启动 Docker 服务
-          docker compose -f \$COMPOSE_FILE down
-          docker compose -f \$COMPOSE_FILE up -d --build
+          docker compose -f $COMPOSE_FILE down
+          docker compose -f $COMPOSE_FILE up -d --build
           
-          echo "✅ 部署完成：\$BRANCH -> \$PROJECT_DIR"
+          echo "✅ 部署完成：$BRANCH -> $PROJECT_DIR"
           
           EOF
