@@ -21,8 +21,11 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# 读取哪一个 .env 文件：默认是 ".env"，可以通过环境变量覆盖
+env_file = os.environ.get('DJANGO_ENV_FILE', os.path.join(BASE_DIR, '.env'))
+
 # Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(env_file)
 # False if not in os.environ because of casting above
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')

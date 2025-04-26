@@ -1,29 +1,17 @@
 version: "3"
 services:
-  nginx-proxy-manager:
-    container_name: nginx-proxy-manager
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
-    volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
-      - /www/autoDepoly/static:/code/collected_static
-    networks:
-      - nginx_default
   app:
-    container_name: autodepoly-app
+    container_name: autodepoly-dev
     restart: unless-stopped
     build: .  # '点'代表当前目录
     env_file:
       - .env
+    environment:
+      - DJANGO_ENV_FILE=/code/.env.dev
     command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn --timeout=30 --workers=4 --bind :8000 autoDepoly.wsgi:application"
     volumes:
       - .:/code
-      - /www/autoDepoly/static:/code/collected_static
+      - /www/autoDepoly-dev/static:/code/collected_static
     expose:
       - "8000"
     networks:
@@ -33,4 +21,4 @@ services:
       
 networks:
   nginx_default:
-    driver: bridge
+    external: true
