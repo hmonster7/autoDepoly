@@ -36,18 +36,18 @@ jobs:
           BRANCH="${{ github.ref_name }}"
           
           # 按分支设置路径和文件
-          if [ "\$BRANCH" = "master" ]; then
+          if [ "$BRANCH" = "master" ]; then
             PROJECT_DIR="/www/autoDepoly-master"
             COMPOSE_FILE="docker-compose.master.yml"
             ENV_FILE=".env.master"
             ENV_CONTENT="${{ secrets.ENV_MASTER }}"
-          elif [ "\$BRANCH" = "dev" ]; then
+          elif [ "$BRANCH" = "dev" ]; then
             PROJECT_DIR="/www/autoDepoly-dev"
             COMPOSE_FILE="docker-compose.dev.yml"
             ENV_FILE=".env.dev"
             ENV_CONTENT="${{ secrets.ENV_DEV }}"
           else
-            echo "❌ 不支持的分支: \$BRANCH"
+            echo "❌ 不支持的分支: $BRANCH"
             exit 1
           fi
           
