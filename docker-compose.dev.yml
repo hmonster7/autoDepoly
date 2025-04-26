@@ -16,8 +16,6 @@ services:
       - "8000"
     networks:
       - nginx_default
-    depends_on:
-      - nginx-proxy-manager
       
 networks:
   nginx_default:
