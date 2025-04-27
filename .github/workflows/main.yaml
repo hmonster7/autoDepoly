@@ -82,26 +82,27 @@ jobs:
           if [ ! -f "$NGINX_COMPOSE" ]; then
             echo "📝 创建nginx配置文件"
             cat > $NGINX_COMPOSE << 'EOFNGINX'
-            version: "3"
-            services:
-              nginx-proxy-manager:
-                container_name: nginx-proxy-manager
-                image: 'jc21/nginx-proxy-manager:latest'
-                restart: unless-stopped
-                ports:
-                  - '80:80'
-                  - '81:81'
-                  - '443:443'
-                volumes:
-                  - ./data:/data
-                  - ./letsencrypt:/etc/letsencrypt
-                  - /www/autoDepoly-master/static:/code/static/master
-                  - /www/autoDepoly-dev/static:/code/static/dev
+          version: "3"
+          services:
+            nginx-proxy-manager:
+              container_name: nginx-proxy-manager
+              image: 'jc21/nginx-proxy-manager:latest'
+              restart: unless-stopped
+              ports:
+                - '80:80'
+                - '81:81'
+                - '443:443'
+              volumes:
+                - ./data:/data
+                - ./letsencrypt:/etc/letsencrypt
+                - /www/autoDepoly-master/static:/code/static/master
+                - /www/autoDepoly-dev/static:/code/static/dev
+        
+          networks:
+            default:
+              name: nginx_default
+          EOFNGINX
           
-            networks:
-              default:
-                name: nginx_default
-            EOFNGINX
             # 确保数据目录存在
             mkdir -p $NGINX_DIR/data
             mkdir -p $NGINX_DIR/letsencrypt
