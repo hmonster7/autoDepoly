@@ -51,8 +51,10 @@ jobs:
             exit 1
           fi
           
-          # 如果目录不存在就 clone，否则就进入目录
-          if [ ! -d "$PROJECT_DIR" ]; then
+          # 如果目录不存在, 或者关键 docker-compose 文件不存在，就 clone，否则就进入目录
+          if [ ! -d "$PROJECT_DIR" ] || [ ! -f "$PROJECT_DIR/$COMPOSE_FILE" ]; then
+            echo "📁 目录不存在或者缺少关键文件，执行 git clone"
+            rm -rf $PROJECT_DIR
             git clone --branch $BRANCH git@github.com:hmonster7/autoDepoly.git $PROJECT_DIR
           fi
           cd $PROJECT_DIR
